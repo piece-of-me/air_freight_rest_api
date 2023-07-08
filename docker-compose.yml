@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+
+  air_freight_server:
+    container_name: air_freight_server
+    image: nginx:1.23
+    volumes:
+      - ./:/var/www
+      - ./_docker/nginx/conf.d/:/etc/nginx/conf.d
+    ports:
+      - "8000:80"
+    restart: always
+
+  air_freight_app:
+    container_name: air_freight_app
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www/
+      - ./_docker/app/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - air_freight_server
+      - air_freight_database
+
+  air_freight_database:
+    container_name: air_freight_database
+    ports:
+      - "8001:3306"
+
+    image: postgres:15.0
+    volumes:
+      - ./_docker/tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+    restart: always
+
+  air_freight_adminer:
+    container_name: air_freight_adminer
+    image: adminer
+    depends_on:
+      - air_freight_database
+    restart: always
+    ports:
+      - "8002:8080"

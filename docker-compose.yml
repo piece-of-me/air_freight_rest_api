@@ -26,16 +26,19 @@ services:
 
   air_freight_database:
     container_name: air_freight_database
+    env_file:
+      - .env
     ports:
-      - "8001:3306"
-
+      - "8001:${DB_PORT}"
     image: postgres:15.0
     volumes:
       - ./_docker/tmp/db:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#    command:
+#      - 'psql \i '
     restart: always
 
   air_freight_adminer:

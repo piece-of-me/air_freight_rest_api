@@ -15,14 +15,14 @@ class Aircraft
 {
     /**
      * @OA\Property(
-     *     title="aircraft_code",
+     *     title="code",
      *     description="Код самолета, IATA",
      *     example="773"
      * )
      *
      * @var string
      */
-    public string $aircraft_code;
+    public string $code;
 
     /**
      * @OA\Property(

@@ -205,6 +205,221 @@
                     }
                 }
             }
+        },
+        "/api/airports": {
+            "get": {
+                "tags": [
+                    "Airports"
+                ],
+                "summary": "Получение всех аэропортов",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AirportResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Airports"
+                ],
+                "summary": "Добавление аэропорта",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAirportRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Успешное добавление"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"code\" должно присутствовать (and 5 more errors)"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "code": {
+                                                        "type": "string",
+                                                        "example": "Поле \"code\" должно присутствовать"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Поле \"name\" должно присутствовать"
+                                                    },
+                                                    "city": {
+                                                        "type": "string",
+                                                        "example": "Поле \"city\" должно присутствовать"
+                                                    },
+                                                    "longitude": {
+                                                        "type": "string",
+                                                        "example": "Поле \"longitude\" должно присутствовать"
+                                                    },
+                                                    "latitude": {
+                                                        "type": "string",
+                                                        "example": "Поле \"latitude\" должно присутствовать"
+                                                    },
+                                                    "timezone": {
+                                                        "type": "string",
+                                                        "example": "Поле \"timezone\" должно присутствовать"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/airports/{airport}": {
+            "get": {
+                "tags": [
+                    "Airports"
+                ],
+                "summary": "Получение аэропорта",
+                "parameters": [
+                    {
+                        "name": "airport",
+                        "in": "path",
+                        "description": "Код аэропорта",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "MJZ"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/AirportResource"
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "code": "763",
+                                            "model": "Boeing 767-300",
+                                            "range": 7900
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Airports"
+                ],
+                "summary": "Обновление данных аэропорта",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код аэропорта",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "MJZ"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAirportRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление данных"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"name\" не должно быть длиннее 100 символов (and 4 more errors)"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Поле \"name\" не должно быть длиннее 100 символов"
+                                                    },
+                                                    "city": {
+                                                        "type": "string",
+                                                        "example": "Поле \"city\" не должно быть длиннее 100 символов"
+                                                    },
+                                                    "longitude": {
+                                                        "type": "string",
+                                                        "example": "Поле \"longitude\" не должно быть длиннее 20 символов"
+                                                    },
+                                                    "latitude": {
+                                                        "type": "string",
+                                                        "example": "Поле \"latitude\" не должно быть длиннее 20 символов"
+                                                    },
+                                                    "timezone": {
+                                                        "type": "string",
+                                                        "example": "Поле \"timezone\" не должно быть длиннее 30 символов"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -213,8 +428,8 @@
                 "title": "Aircraft",
                 "description": "Модель \"Самолет\"",
                 "properties": {
-                    "aircraft_code": {
-                        "title": "aircraft_code",
+                    "code": {
+                        "title": "code",
                         "description": "Код самолета, IATA",
                         "type": "string",
                         "example": "773"
@@ -235,6 +450,54 @@
                 "type": "object",
                 "xml": {
                     "name": "Aircraft"
+                }
+            },
+            "Airport": {
+                "title": "Airport",
+                "description": "Модель \"Аэропорт\"",
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "Код аэропорта",
+                        "type": "string",
+                        "example": "MJZ"
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "Название аэропорта",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "city": {
+                        "title": "city",
+                        "description": "Город",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "longitude": {
+                        "title": "longitude",
+                        "description": "Координаты аэропорта: долгота",
+                        "type": "number",
+                        "format": "float",
+                        "example": 114.038928
+                    },
+                    "latitude": {
+                        "title": "latitude",
+                        "description": "Координаты аэропорта: широта",
+                        "type": "number",
+                        "format": "float",
+                        "example": 62.534689
+                    },
+                    "timezone": {
+                        "title": "timezone",
+                        "description": "Временная зона аэропорта",
+                        "type": "string",
+                        "example": "Asia/Yakutsk"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Airport"
                 }
             },
             "StoreAircraftRequest": {
@@ -286,6 +549,98 @@
                 },
                 "type": "object"
             },
+            "StoreAirportRequest": {
+                "title": "StoreAirportRequest",
+                "description": "Данные, необходимые для добавления аэропорта",
+                "required": [
+                    "code",
+                    "name",
+                    "cite",
+                    "longitude",
+                    "latitude",
+                    "timezone"
+                ],
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "Код аэропорта",
+                        "type": "string",
+                        "example": "MJZ"
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "Название аэропорта",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "city": {
+                        "title": "city",
+                        "description": "Город",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "longitude": {
+                        "title": "longitude",
+                        "description": "Координаты аэропорта: долгота",
+                        "type": "number",
+                        "format": "float",
+                        "example": 114.038928
+                    },
+                    "latitude": {
+                        "title": "latitude",
+                        "description": "Координаты аэропорта: широта",
+                        "type": "number",
+                        "format": "float",
+                        "example": 62.534689
+                    },
+                    "timezone": {
+                        "title": "timezone",
+                        "description": "Временная зона аэропорта",
+                        "type": "string",
+                        "example": "Asia/Yakutsk"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAirportRequest": {
+                "title": "UpdateAirportRequest",
+                "description": "Данные, необходимые для обновления данных аэропорта",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Название аэропорта",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "city": {
+                        "title": "city",
+                        "description": "Город",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "longitude": {
+                        "title": "longitude",
+                        "description": "Координаты аэропорта: долгота",
+                        "type": "number",
+                        "format": "float",
+                        "example": 114.038928
+                    },
+                    "latitude": {
+                        "title": "latitude",
+                        "description": "Координаты аэропорта: широта",
+                        "type": "number",
+                        "format": "float",
+                        "example": 62.534689
+                    },
+                    "timezone": {
+                        "title": "timezone",
+                        "description": "Временная зона аэропорта",
+                        "type": "string",
+                        "example": "Asia/Yakutsk"
+                    }
+                },
+                "type": "object"
+            },
             "AircraftResource": {
                 "title": "AircraftResource",
                 "description": "Поля самолета",
@@ -297,6 +652,24 @@
                 "type": "object",
                 "xml": {
                     "name": "AircraftResource"
+                }
+            },
+            "AirportResource": {
+                "title": "AirportResource",
+                "description": "Поля авэропорта",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Airport"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "AirportResource"
                 }
             }
         }

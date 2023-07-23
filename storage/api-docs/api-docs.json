@@ -1,0 +1,304 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Airfreight REST API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/aircrafts": {
+            "get": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Получение всех самолетов",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/AircraftResource"
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "code": "773",
+                                            "model": "Boeing 777-300",
+                                            "range": 11100
+                                        },
+                                        {
+                                            "code": "763",
+                                            "model": "Boeing 767-300",
+                                            "range": 7900
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Добавление самолета",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAircraftRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Успешное добавление"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"code\" должно присутствовать (and 2 more errors)"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "code": {
+                                                        "type": "string",
+                                                        "example": "Поле \"code\" должно присутствовать"
+                                                    },
+                                                    "model": {
+                                                        "type": "string",
+                                                        "example": "Поле \"model\" должно присутствовать"
+                                                    },
+                                                    "range": {
+                                                        "type": "string",
+                                                        "example": "Поле \"range\" должно присутствовать"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aircrafts/{aircraft}": {
+            "get": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Получение самолета",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код самолета",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "773"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/AircraftResource"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Обновление данных самолета",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код самолета",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "785"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAircraftRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление данных"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"model\" не должно быть длиннее 50 символов (and 1 more error)"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "model": {
+                                                        "type": "string",
+                                                        "example": "Поле \"model\" не должно быть длиннее 50 символов"
+                                                    },
+                                                    "range": {
+                                                        "type": "string",
+                                                        "example": "Поле \"range\" должно быть числом"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Aircraft": {
+                "title": "Aircraft",
+                "description": "Модель \"Самолет\"",
+                "properties": {
+                    "aircraft_code": {
+                        "title": "aircraft_code",
+                        "description": "Код самолета, IATA",
+                        "type": "string",
+                        "example": "773"
+                    },
+                    "model": {
+                        "title": "model",
+                        "description": "Модель самолета",
+                        "type": "string",
+                        "example": "Sukhoi SuperJet-100"
+                    },
+                    "range": {
+                        "title": "range",
+                        "description": "Максимальная дальность полета, км",
+                        "type": "integer",
+                        "example": 3000
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Aircraft"
+                }
+            },
+            "StoreAircraftRequest": {
+                "title": "StoreAircraftRequest",
+                "description": "Данные, необходимые для добавления самолета",
+                "required": [
+                    "code",
+                    "model",
+                    "range"
+                ],
+                "properties": {
+                    "code": {
+                        "title": "code",
+                        "description": "Код самолета, IATA",
+                        "type": "string",
+                        "example": "785"
+                    },
+                    "model": {
+                        "title": "model",
+                        "description": "Модель самолета",
+                        "type": "string",
+                        "example": "Sukhoi SuperJet-100"
+                    },
+                    "range": {
+                        "title": "range",
+                        "description": "Максимальная дальность полета, км",
+                        "type": "integer",
+                        "example": "3000"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAircraftRequest": {
+                "title": "UpdateAircraftRequest",
+                "description": "Данные, необходимые для обновления самолета",
+                "properties": {
+                    "model": {
+                        "title": "model",
+                        "description": "Модель самолета",
+                        "type": "string",
+                        "example": "Sukhoi SuperJet-100"
+                    },
+                    "range": {
+                        "title": "range",
+                        "description": "Максимальная дальность полета, км",
+                        "type": "integer",
+                        "example": "3000"
+                    }
+                },
+                "type": "object"
+            },
+            "AircraftResource": {
+                "title": "AircraftResource",
+                "description": "Поля самолета",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/Aircraft"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "AircraftResource"
+                }
+            }
+        }
+    }
+}

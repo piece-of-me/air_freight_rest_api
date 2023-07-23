@@ -21,8 +21,22 @@ class TicketSeeder extends Seeder
                 'book_ref' => $row[1],
                 'passenger_id' => $row[2],
                 'passenger_name' => $row[3],
-                'contact_data' => json_decode($row[4]),
+                'contact_data' => $this->_fixJson($row),
             ], $chunk));
         }
+    }
+
+    private function _fixJson(array $row): ?string
+    {
+        if (sizeof($row) < 5) return null;
+        $size = sizeof($row);
+        $result = [];
+        for ($i = 4; $i < $size; $i++) {
+            preg_match_all('/(?<=[\'|"])([\w\.@\d+]+)(?=[\'|"])/i', $row[$i], $matches);
+            if (isset($matches[0][0], $matches[0][1])) {
+                $result[$matches[0][0]] = $matches[0][1];
+            }
+        }
+        return sizeof($result) > 0 ? json_encode($result) : null;
     }
 }

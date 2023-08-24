@@ -1,0 +1,169 @@
+<?php
+
+namespace App\Swagger\Controllers;
+
+/**
+ * @OA\Get(
+ *      path="/api/flights",
+ *      summary="Получение всех рейсов",
+ *      tags={"Flights"},
+ *
+ *      @OA\Response(
+ *          response=200,
+ *          description="Ok",
+ *          @OA\JsonContent(
+ *              allOf={
+ *                  @OA\Schema(ref="#/components/schemas/FlightSingleResource")
+ *              },
+ *              example={
+ *                  "data": {
+ *                      {
+ *                          "flight_no": "PG0405",
+ *                          "scheduled_departure": "2016-09-13 05:35:00+00",
+ *                          "scheduled_arrival": "2016-09-13 06:30:00+00",
+ *                          "status": "Arrived"
+ *                      },
+ *                      {
+ *                          "flight_no": "PG0404",
+ *                          "scheduled_departure": "2016-10-03 15:05:00+00",
+ *                          "scheduled_arrival": "2016-10-03 16:00:00+00",
+ *                          "status": "Arrived"
+ *                      },
+ *                      {
+ *                          "flight_no": "PG0405",
+ *                          "scheduled_departure": "2016-10-03 05:35:00+00",
+ *                          "scheduled_arrival": "2016-10-03 06:30:00+00",
+ *                          "status": "Arrived"
+ *                      },
+ *                  }
+ *              }
+ *          ),
+ *      ),
+ * ),
+ * @OA\Get(
+ *      path="/api/flights/{flight}",
+ *      summary="Получение информации о конкретном рейсе",
+ *      tags={"Flights"},
+ *
+ *      @OA\Parameter(
+ *          name="flight",
+ *          description="Код рейса",
+ *          required=true,
+ *          in="path",
+ *          example="PG0405",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *
+ *      @OA\Response(
+ *          response=200,
+ *          description="Ok",
+ *          @OA\JsonContent(
+ *              allOf={
+ *                  @OA\Schema(ref="#/components/schemas/FlightResource")
+ *              },
+ *              example={
+ *                  "data": {
+ *                      {
+ *                          "flight_no": "PG0405",
+ *                          "scheduled_departure": "2016-09-13 05:35:00+00",
+ *                          "scheduled_arrival": "2016-09-13 06:30:00+00",
+ *                          "departure_airport": {
+ *                              "code": "DME",
+ *                              "name": "Домодедово",
+ *                              "city": "Москва",
+ *                              "longitude": "37.906111",
+ *                              "latitude": "55.408611",
+ *                              "timezone": "Europe/Moscow"
+ *                          },
+ *                          "arrival_airport": {
+ *                              "code": "LED",
+ *                              "name": "Пулково",
+ *                              "city": "Санкт-Петербург",
+ *                              "longitude": "30.262503",
+ *                              "latitude": "59.800292",
+ *                              "timezone": "Europe/Moscow"
+ *                          },
+ *                          "status": "Arrived",
+ *                          "aircraft": {
+ *                              "code": "321",
+ *                              "model": "Airbus A321-200",
+ *                              "range": 5600
+ *                          },
+ *                          "actual_departure": "2016-09-13 05:44:00+00",
+ *                          "actual_arrival": "2016-09-13 06:39:00+00"
+ *                      }
+ *                  }
+ *              }
+ *          ),
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="Not found",
+ *      ),
+ * ),
+ * @OA\Post(
+ *      path="/api/flights",
+ *      summary="Добавление рейса",
+ *      tags={"Flights"},
+ *
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(ref="#/components/schemas/StoreFlightRequest")
+ *      ),
+ *
+ *      @OA\Response(
+ *          response=201,
+ *          description="Успешное добавление",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="flight_no", type="string", description="Номер рейса", example="VM6918")
+ *          ),
+ *      ),
+ *      @OA\Response(
+ *          response=422,
+ *          description="Ошибка валидации входящих данных",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="message", type="string", example="Поле ""scheduled departure"" должно присутствовать (and 2 more errors)"),
+ *              @OA\Property(property="errors", type="array", @OA\Items(
+ *                  @OA\Property(property="scheduled_departure", type="string", example="Поле ""scheduled departure"" должно присутствовать"),
+ *                  @OA\Property(property="status", type="string", example="Поле ""status"" должно быть одним из возможных вариантов"),
+ *                  @OA\Property(property="aircraft_code", type="string", example="Поле ""aircraft code"" должно существовать в базе данных"),
+ *              ))
+ *          )
+ *      )
+ * ),
+ * @OA\Patch (
+ *      path="/api/flights",
+ *      summary="Обновление информации о рейсе",
+ *      tags={"Flights"},
+ *
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(ref="#/components/schemas/UpdateFlightRequest")
+ *      ),
+ *
+ *      @OA\Response(
+ *          response=200,
+ *          description="Успешное обновление данных"
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="Not found",
+ *      ),
+ *      @OA\Response(
+ *          response=422,
+ *          description="Ошибка валидации входящих данных",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="message", type="string", example="Необходимо передать хотя бы один параметр (and 3 more errors)"),
+ *              @OA\Property(property="errors", type="array", @OA\Items(
+ *                  @OA\Property(property="status", type="string", example="Необходимо передать хотя бы один параметр"),
+ *                  @OA\Property(property="aircraft_code", type="string", example="Необходимо передать хотя бы один параметр"),
+ *                  @OA\Property(property="actual_departure", type="string", example="Необходимо передать хотя бы один параметр"),
+ *                  @OA\Property(property="actual_arrival", type="string", example="Необходимо передать хотя бы один параметр"),
+ *              ))
+ *          )
+ *      )
+ * ),
+ */
+class FlightController
+{
+}

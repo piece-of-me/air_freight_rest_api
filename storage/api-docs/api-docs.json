@@ -420,6 +420,257 @@
                     }
                 }
             }
+        },
+        "/api/flights": {
+            "get": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Получение всех рейсов",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/FlightSingleResource"
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "flight_no": "PG0405",
+                                            "scheduled_departure": "2016-09-13 05:35:00+00",
+                                            "scheduled_arrival": "2016-09-13 06:30:00+00",
+                                            "status": "Arrived"
+                                        },
+                                        {
+                                            "flight_no": "PG0404",
+                                            "scheduled_departure": "2016-10-03 15:05:00+00",
+                                            "scheduled_arrival": "2016-10-03 16:00:00+00",
+                                            "status": "Arrived"
+                                        },
+                                        {
+                                            "flight_no": "PG0405",
+                                            "scheduled_departure": "2016-10-03 05:35:00+00",
+                                            "scheduled_arrival": "2016-10-03 06:30:00+00",
+                                            "status": "Arrived"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Добавление рейса",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreFlightRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Успешное добавление",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "flight_no": {
+                                            "description": "Номер рейса",
+                                            "type": "string",
+                                            "example": "VM6918"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"scheduled departure\" должно присутствовать (and 2 more errors)"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "scheduled_departure": {
+                                                        "type": "string",
+                                                        "example": "Поле \"scheduled departure\" должно присутствовать"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Поле \"status\" должно быть одним из возможных вариантов"
+                                                    },
+                                                    "aircraft_code": {
+                                                        "type": "string",
+                                                        "example": "Поле \"aircraft code\" должно существовать в базе данных"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Обновление информации о рейсе",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateFlightRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление данных"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Необходимо передать хотя бы один параметр (and 3 more errors)"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Необходимо передать хотя бы один параметр"
+                                                    },
+                                                    "aircraft_code": {
+                                                        "type": "string",
+                                                        "example": "Необходимо передать хотя бы один параметр"
+                                                    },
+                                                    "actual_departure": {
+                                                        "type": "string",
+                                                        "example": "Необходимо передать хотя бы один параметр"
+                                                    },
+                                                    "actual_arrival": {
+                                                        "type": "string",
+                                                        "example": "Необходимо передать хотя бы один параметр"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/flights/{flight}": {
+            "get": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Получение информации о конкретном рейсе",
+                "parameters": [
+                    {
+                        "name": "flight",
+                        "in": "path",
+                        "description": "Код рейса",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "PG0405"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/FlightResource"
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "flight_no": "PG0405",
+                                            "scheduled_departure": "2016-09-13 05:35:00+00",
+                                            "scheduled_arrival": "2016-09-13 06:30:00+00",
+                                            "departure_airport": {
+                                                "code": "DME",
+                                                "name": "Домодедово",
+                                                "city": "Москва",
+                                                "longitude": "37.906111",
+                                                "latitude": "55.408611",
+                                                "timezone": "Europe/Moscow"
+                                            },
+                                            "arrival_airport": {
+                                                "code": "LED",
+                                                "name": "Пулково",
+                                                "city": "Санкт-Петербург",
+                                                "longitude": "30.262503",
+                                                "latitude": "59.800292",
+                                                "timezone": "Europe/Moscow"
+                                            },
+                                            "status": "Arrived",
+                                            "aircraft": {
+                                                "code": "321",
+                                                "model": "Airbus A321-200",
+                                                "range": 5600
+                                            },
+                                            "actual_departure": "2016-09-13 05:44:00+00",
+                                            "actual_arrival": "2016-09-13 06:39:00+00"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -498,6 +749,95 @@
                 "type": "object",
                 "xml": {
                     "name": "Airport"
+                }
+            },
+            "Flight": {
+                "title": "Flight",
+                "description": "Рейс",
+                "properties": {
+                    "flight_no": {
+                        "description": "Код рейса",
+                        "type": "string",
+                        "example": "PG0405"
+                    },
+                    "scheduled_departure": {
+                        "description": "Запланированная дата отправления",
+                        "type": "string",
+                        "example": "2016-09-13 05:35:00+00"
+                    },
+                    "scheduled_arrival": {
+                        "description": "Запланированная дата прибытия",
+                        "type": "string",
+                        "example": "2016-09-13 06:30:00+00"
+                    },
+                    "departure_airport": {
+                        "$ref": "#/components/schemas/Airport"
+                    },
+                    "arrival_airport": {
+                        "$ref": "#/components/schemas/Airport"
+                    },
+                    "status": {
+                        "description": "Статус рейса",
+                        "type": "string",
+                        "enum": [
+                            "Arrived",
+                            "Scheduled",
+                            "On Time"
+                        ],
+                        "example": "Arrived"
+                    },
+                    "aircraft": {
+                        "$ref": "#/components/schemas/Aircraft"
+                    },
+                    "actual_departure": {
+                        "description": "Фактическая дата отправления",
+                        "type": "string",
+                        "example": "2016-09-13 05:35:00+00"
+                    },
+                    "actual_arrival": {
+                        "description": "Фактическая дата прибытия",
+                        "type": "string",
+                        "example": "2016-09-13 06:30:00+00"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Flight"
+                }
+            },
+            "FlightSingle": {
+                "title": "FlightSingle",
+                "description": "Рейс",
+                "properties": {
+                    "flight_no": {
+                        "description": "Код рейса",
+                        "type": "string",
+                        "example": "PG0405"
+                    },
+                    "scheduled_departure": {
+                        "description": "Запланированная дата отправления",
+                        "type": "string",
+                        "example": "2016-09-13 05:35:00+00"
+                    },
+                    "scheduled_arrival": {
+                        "description": "Запланированная дата прибытия",
+                        "type": "string",
+                        "example": "2016-09-13 06:30:00+00"
+                    },
+                    "status": {
+                        "description": "Статус рейса",
+                        "type": "string",
+                        "enum": [
+                            "Arrived",
+                            "Scheduled",
+                            "On Time"
+                        ],
+                        "example": "Arrived"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "FlightSingle"
                 }
             },
             "StoreAircraftRequest": {
@@ -641,6 +981,82 @@
                 },
                 "type": "object"
             },
+            "StoreFlightRequest": {
+                "title": "StoreFlightRequest",
+                "description": "Данные, необходимые для добавления рейса",
+                "required": [
+                    "scheduled_departure",
+                    "scheduled_arrival",
+                    "departure_airport",
+                    "arrival_airport",
+                    "status",
+                    "aircraft_code"
+                ],
+                "properties": {
+                    "scheduled_departure": {
+                        "description": "Дата отправления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-13 05:35:00"
+                    },
+                    "scheduled_arrival": {
+                        "description": "Дата прибытия",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-14 06:30:00"
+                    },
+                    "departure_airport": {
+                        "description": "Код аэропорта отправления",
+                        "type": "string",
+                        "example": "DME"
+                    },
+                    "arrival_airport": {
+                        "description": "Код аэропорта прибытия",
+                        "type": "string",
+                        "example": "HMA"
+                    },
+                    "status": {
+                        "description": "Статус рейса",
+                        "type": "string",
+                        "example": "On Time"
+                    },
+                    "aircraft_code": {
+                        "description": "Код самолета, IATA",
+                        "type": "integer",
+                        "example": 321
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateFlightRequest": {
+                "title": "UpdateFlightRequest",
+                "description": "Данные, необходимые для обновления информации рейса",
+                "properties": {
+                    "status": {
+                        "description": "Статус рейса",
+                        "type": "string",
+                        "example": "On Time"
+                    },
+                    "aircraft_code": {
+                        "description": "Код самолета, IATA",
+                        "type": "integer",
+                        "example": 321
+                    },
+                    "actual_departure": {
+                        "description": "Фактическое время отправления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-13 05:36:00"
+                    },
+                    "actual_arrival": {
+                        "description": "Фактическое время прибытия",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-14 06:38:00"
+                    }
+                },
+                "type": "object"
+            },
             "AircraftResource": {
                 "title": "AircraftResource",
                 "description": "Поля самолета",
@@ -670,6 +1086,42 @@
                 "type": "object",
                 "xml": {
                     "name": "AirportResource"
+                }
+            },
+            "FlightResource": {
+                "title": "FlightResource",
+                "description": "Поля рейса",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Flight"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "FlightResource"
+                }
+            },
+            "FlightSingleResource": {
+                "title": "FlightSingleResource",
+                "description": "Поля рейса",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FlightSingle"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "FlightSingleResource"
                 }
             }
         }

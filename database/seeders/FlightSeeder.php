@@ -17,7 +17,7 @@ class FlightSeeder extends Seeder
         $reader = new CSVFileReader(base_path('/database/csv/flights.csv'));
         foreach ($reader->chunk() as $chunk) {
             DB::table('flights')->insert(array_map(fn($row) => [
-                'flight_id' => $row[0],
+//                'flight_id' => $row[0],
                 'flight_no' => $row[1],
                 'scheduled_departure' => $row[2],
                 'scheduled_arrival' => $row[3],

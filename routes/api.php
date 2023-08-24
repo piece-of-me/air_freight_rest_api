@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\FlightController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AircraftController;
@@ -41,6 +42,17 @@ Route::prefix('airports')->group(function () {
     Route::patch('/{airport:airport_code}', [AirportController::class, 'update'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
         ->name('airports.update');
+});
+
+Route::prefix('flights')->group(function () {
+    Route::get('/', [FlightController::class, 'index'])->name('flights.index');
+    Route::get('/{flight_no}', [FlightController::class, 'show'])
+        ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->name('flights.show');
+    Route::post('/', [FlightController::class, 'store'])->name('flights.store');
+    Route::patch('/{flight:flight_id}', [FlightController::class, 'update'])
+        ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->name('flights.update');
 });
 
 Route::fallback(function () {

@@ -8,6 +8,10 @@ namespace App\Swagger\Controllers;
  *      summary="Получение всех аэропортов",
  *      tags={"Airports"},
  *
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(ref="#/components/schemas/IndexAirportRequest")
+ *      ),
+ *
  *      @OA\Response(
  *          response=200,
  *          description="Ok",

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\AirportFilter;
+use App\Http\Requests\Airport\IndexRequest;
 use App\Http\Requests\Airport\StoreRequest;
 use App\Http\Requests\Airport\UpdateRequest;
 use App\Http\Resources\AirportResource;
@@ -12,9 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AirportController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(IndexRequest $request): AnonymousResourceCollection
     {
-        return AirportResource::collection(Airport::all());
+        $data = $request->validated();
+        $filter = app()->make(AirportFilter::class, ['queryParams' => array_filter($data)]);
+        return AirportResource::collection(Airport::filter($filter)->get());
     }
 
     function store(StoreRequest $request): JsonResponse

@@ -8,6 +8,10 @@ namespace App\Swagger\Controllers;
  *      summary="Получение всех рейсов",
  *      tags={"Flights"},
  *
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(ref="#/components/schemas/IndexFlightRequest")
+ *      ),
+ *
  *      @OA\Response(
  *          response=200,
  *          description="Ok",

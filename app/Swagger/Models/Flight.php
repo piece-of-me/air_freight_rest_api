@@ -15,6 +15,16 @@ class Flight
 {
     /**
      * @OA\Property(
+     *     description="Id полета",
+     *     example="1"
+     * )
+     *
+     * @var string
+     */
+    public string $flight_id;
+
+    /**
+     * @OA\Property(
      *     description="Код рейса",
      *     example="PG0405"
      * )

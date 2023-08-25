@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\FlightNoGenerator;
+use App\Http\Filters\FlightFilter;
+use App\Http\Requests\Flight\IndexRequest;
 use App\Http\Requests\Flight\UpdateRequest;
 use App\Http\Requests\Flight\StoreRequest;
 use App\Http\Resources\FlightResource;
@@ -13,10 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FlightController extends Controller
 {
-
-    public function index(): AnonymousResourceCollection
+    public function index(IndexRequest $request): AnonymousResourceCollection
     {
-        return FlightResource::collection(Flight::all());
+        $data = $request->validated();
+        $filter = app()->make(FlightFilter::class, ['queryParams' => array_filter($data)]);
+        return FlightResource::collection(Flight::filter($filter)->get());
     }
 
     public function show(string $flightNO): AnonymousResourceCollection

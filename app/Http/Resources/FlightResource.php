@@ -16,6 +16,7 @@ class FlightResource extends JsonResource
     {
         if ($request->routeIs('flights.index')) {
             return [
+                'flight_id' => $this->flight_id,
                 'flight_no' => $this->flight_no,
                 'scheduled_departure' => $this->scheduled_departure,
                 'scheduled_arrival' => $this->scheduled_arrival,
@@ -23,6 +24,7 @@ class FlightResource extends JsonResource
             ];
         } else {
             return [
+                'flight_id' => $this->flight_id,
                 'flight_no' => $this->flight_no,
                 'scheduled_departure' => $this->scheduled_departure,
                 'scheduled_arrival' => $this->scheduled_arrival,

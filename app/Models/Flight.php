@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Flight extends Model
 {
     use SoftDeletes;
+    use Filterable;
 
     protected $table = 'flights';
     protected $primaryKey = 'flight_id';

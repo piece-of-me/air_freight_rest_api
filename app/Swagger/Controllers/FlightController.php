@@ -167,6 +167,65 @@ namespace App\Swagger\Controllers;
  *          )
  *      )
  * ),
+ * @OA\Get(
+ *      path="/api/flights/{flight}/tickets",
+ *      summary="Получение билетов рейса",
+ *      tags={"Flights"},
+ *
+ *      @OA\Parameter(
+ *          name="flight",
+ *          description="Id рейса",
+ *          required=true,
+ *          in="path",
+ *          example="1",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *
+ *      @OA\Response(
+ *          response=200,
+ *          description="Ok",
+ *          @OA\JsonContent(
+ *              allOf={
+ *                  @OA\Schema(ref="#/components/schemas/FlightTicketsResource")
+ *              },
+ *              example={
+ *                  "data": {
+ *                      {
+ *                          "ticket_no": "0005432816945",
+ *                          "passenger_id": "8841 094140",
+ *                          "passenger_name": "EVGENIY MATVEEV",
+ *                          "contact_data": {
+ *                              "phone": "+70499680033"
+ *                          },
+ *                          "booking": {
+ *                              "book_date": "2016-08-29 23:06:00+00",
+ *                              "total_amount": "70200.00"
+ *                          }
+ *                      },
+ *                      {
+ *                          "ticket_no": "0005432261098",
+ *                          "passenger_id": "7453 780162",
+ *                          "passenger_name": "SVETLANA VOROBEVA",
+ *                          "contact_data": {
+ *                              "email": "s.vorobeva.08081974@postgrespro.ru",
+ *                              "phone": "+70635611161"
+ *                          },
+ *                          "booking": {
+ *                              "book_date": "2016-08-28 15:24:00+00",
+ *                              "total_amount": "46700.00"
+ *                          }
+ *                      }
+ *                  }
+ *              }
+ *          ),
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="Not found",
+ *      ),
+ * ),
  */
 class FlightController
 {

@@ -49,6 +49,9 @@ Route::prefix('flights')->group(function () {
     Route::get('/{flight_no}', [FlightController::class, 'show'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
         ->name('flights.show');
+    Route::get('/{flight:flight_id}/tickets', [FlightController::class, 'ticket'])
+        ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->name('flights.ticket');
     Route::post('/', [FlightController::class, 'store'])->name('flights.store');
     Route::patch('/{flight:flight_id}', [FlightController::class, 'update'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))

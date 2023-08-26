@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Flight extends Model
@@ -37,6 +38,11 @@ class Flight extends Model
     public function aircraft(): belongsTo
     {
         return $this->belongsTo(Aircraft::class, 'aircraft_code', 'aircraft_code');
+    }
+
+    public function tickets(): HasManyThrough
+    {
+        return $this->hasManyThrough(Ticket::class, TicketFlight::class, 'flight_id', 'ticket_no', 'flight_id', 'ticket_no');
     }
 
     public static function getAllowedStatuses(): array

@@ -8,6 +8,7 @@ use App\Http\Requests\Flight\IndexRequest;
 use App\Http\Requests\Flight\UpdateRequest;
 use App\Http\Requests\Flight\StoreRequest;
 use App\Http\Resources\FlightResource;
+use App\Http\Resources\TicketResource;
 use App\Models\Flight;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -26,6 +27,11 @@ class FlightController extends Controller
     {
         $flights = Flight::where('flight_no', $flightNO)->get();
         return FlightResource::collection($flights);
+    }
+
+    public function ticket(Flight $flight): AnonymousResourceCollection
+    {
+        return TicketResource::collection($flight->tickets->all());
     }
 
     public function store(StoreRequest $request): JsonResponse

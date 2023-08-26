@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
@@ -11,4 +12,9 @@ class Ticket extends Model
 
     protected $table = 'tickets';
     protected $guarded = false;
+
+    public function booking(): HasOne
+    {
+        return $this->hasOne(Booking::class, 'book_ref', 'book_ref');
+    }
 }

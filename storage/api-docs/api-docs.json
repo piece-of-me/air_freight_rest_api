@@ -212,6 +212,15 @@
                     "Airports"
                 ],
                 "summary": "Получение всех аэропортов",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IndexAirportRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -427,6 +436,15 @@
                     "Flights"
                 ],
                 "summary": "Получение всех рейсов",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IndexFlightRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -671,6 +689,74 @@
                     }
                 }
             }
+        },
+        "/api/flights/{flight}/tickets": {
+            "get": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Получение билетов рейса",
+                "parameters": [
+                    {
+                        "name": "flight",
+                        "in": "path",
+                        "description": "Id рейса",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/FlightTicketsResource"
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "ticket_no": "0005432816945",
+                                            "passenger_id": "8841 094140",
+                                            "passenger_name": "EVGENIY MATVEEV",
+                                            "contact_data": {
+                                                "phone": "+70499680033"
+                                            },
+                                            "booking": {
+                                                "book_date": "2016-08-29 23:06:00+00",
+                                                "total_amount": "70200.00"
+                                            }
+                                        },
+                                        {
+                                            "ticket_no": "0005432261098",
+                                            "passenger_id": "7453 780162",
+                                            "passenger_name": "SVETLANA VOROBEVA",
+                                            "contact_data": {
+                                                "email": "s.vorobeva.08081974@postgrespro.ru",
+                                                "phone": "+70635611161"
+                                            },
+                                            "booking": {
+                                                "book_date": "2016-08-28 15:24:00+00",
+                                                "total_amount": "46700.00"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -751,10 +837,35 @@
                     "name": "Airport"
                 }
             },
+            "Booking": {
+                "title": "Booking",
+                "description": "Бронирование билета",
+                "properties": {
+                    "book_date": {
+                        "description": "Дата бронирования",
+                        "type": "string",
+                        "example": "2016-08-24 02:52:00+00"
+                    },
+                    "total_amount": {
+                        "description": "Полная сумма бронирования",
+                        "type": "string",
+                        "example": "46700.00"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Booking"
+                }
+            },
             "Flight": {
                 "title": "Flight",
                 "description": "Рейс",
                 "properties": {
+                    "flight_id": {
+                        "description": "Id полета",
+                        "type": "string",
+                        "example": "1"
+                    },
                     "flight_no": {
                         "description": "Код рейса",
                         "type": "string",
@@ -840,6 +951,57 @@
                     "name": "FlightSingle"
                 }
             },
+            "FlightTickets": {
+                "title": "FlightTickets",
+                "description": "Билеты, проданные для конкретного рейса",
+                "properties": {
+                    "ticket_no": {
+                        "description": "Номер билета",
+                        "type": "string",
+                        "example": "0005432816945"
+                    },
+                    "passenger_id": {
+                        "description": "Идентификатор пассажира",
+                        "type": "string",
+                        "example": "8841 094140"
+                    },
+                    "passenger_name": {
+                        "description": "Фамилия и имя пассажира",
+                        "type": "string",
+                        "example": "EVGENIY MATVEEV"
+                    },
+                    "contact_data": {
+                        "$ref": "#/components/schemas/FlightTicketsContactData"
+                    },
+                    "booking": {
+                        "$ref": "#/components/schemas/Booking"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "FlightTickets"
+                }
+            },
+            "FlightTicketsContactData": {
+                "title": "FlightTicketsContactData",
+                "description": "Контактные данные пасссажира",
+                "properties": {
+                    "phone": {
+                        "description": "Номер телефона",
+                        "type": "string",
+                        "example": "+70635611161"
+                    },
+                    "email": {
+                        "description": "Адрес электронной почты",
+                        "type": "string",
+                        "example": "s.vorobeva.08081974@postgrespro.ru"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "FlightTicketsContactData"
+                }
+            },
             "StoreAircraftRequest": {
                 "title": "StoreAircraftRequest",
                 "description": "Данные, необходимые для добавления самолета",
@@ -885,6 +1047,33 @@
                         "description": "Максимальная дальность полета, км",
                         "type": "integer",
                         "example": "3000"
+                    }
+                },
+                "type": "object"
+            },
+            "IndexAirportRequest": {
+                "title": "IndexAirportRequest",
+                "description": "Данные для фильтрации списка аэропортов",
+                "properties": {
+                    "airport_code": {
+                        "description": "Код аэропорта",
+                        "type": "string",
+                        "example": "MJZ"
+                    },
+                    "airport_name": {
+                        "description": "Название аэропорта",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "city": {
+                        "description": "Город",
+                        "type": "string",
+                        "example": "Мирный"
+                    },
+                    "timezone": {
+                        "description": "Временная зона аэропорта",
+                        "type": "string",
+                        "example": "Asia/Yakutsk"
                     }
                 },
                 "type": "object"
@@ -977,6 +1166,62 @@
                         "description": "Временная зона аэропорта",
                         "type": "string",
                         "example": "Asia/Yakutsk"
+                    }
+                },
+                "type": "object"
+            },
+            "IndexFlightRequest": {
+                "title": "IndexFlightRequest",
+                "description": "Данные для фильтрации",
+                "properties": {
+                    "flight_no": {
+                        "description": "Номер рейса",
+                        "type": "string",
+                        "example": "PG0405"
+                    },
+                    "scheduled_departure": {
+                        "description": "Дата отправления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-13 05:35:00"
+                    },
+                    "scheduled_arrival": {
+                        "description": "Дата прибытия",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-14 06:30:00"
+                    },
+                    "departure_airport": {
+                        "description": "Код аэропорта отправления",
+                        "type": "string",
+                        "example": "DME"
+                    },
+                    "arrival_airport": {
+                        "description": "Код аэропорта прибытия",
+                        "type": "string",
+                        "example": "HMA"
+                    },
+                    "status": {
+                        "description": "Статус рейса",
+                        "type": "string",
+                        "example": "On Time"
+                    },
+                    "aircraft_code": {
+                        "description": "Код самолета, IATA",
+                        "type": "integer",
+                        "example": 321
+                    },
+                    "actual_departure": {
+                        "description": "Фактическое время отправления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-13 05:36:00"
+                    },
+                    "actual_arrival": {
+                        "description": "Фактическое время прибытия",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2016-09-14 06:38:00"
                     }
                 },
                 "type": "object"
@@ -1122,6 +1367,24 @@
                 "type": "object",
                 "xml": {
                     "name": "FlightSingleResource"
+                }
+            },
+            "FlightTicketsResource": {
+                "title": "FlightTicketsResource",
+                "description": "Билеты, проданные для конкретного рейса",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FlightTickets"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "FlightTicketsResource"
                 }
             }
         }

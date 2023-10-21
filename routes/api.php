@@ -27,6 +27,14 @@ Route::prefix('aircrafts')->group(function () {
     Route::get('/{aircraft:aircraft_code}', [AircraftController::class, 'show'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
         ->name('aircrafts.show');
+    Route::get('/{aircraft:aircraft_code}/amount/{type}', [AircraftController::class, 'amount'])
+        ->whereIn('type', ['total', 'month'])
+        ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->name('aircrafts.amount');
+    Route::get('{aircraft:aircraft_code}/time/{type}', [AircraftController::class, 'time'])
+        ->whereIn('type', ['total', 'month'])
+        ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->name('aircrafts.time');
     Route::post('/', [AircraftController::class, 'store'])->name('aircrafts.store');
     Route::patch('/{aircraft:aircraft_code}', [AircraftController::class, 'update'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
@@ -59,5 +67,5 @@ Route::prefix('flights')->group(function () {
 });
 
 Route::fallback(function () {
-    dd(request());
+    dd(['Маршрут не найден', request()]);
 });

@@ -29,12 +29,46 @@
                                         {
                                             "code": "773",
                                             "model": "Boeing 777-300",
-                                            "range": 11100
+                                            "range": 11100,
+                                            "seats": [
+                                                {
+                                                    "seat_id": 779,
+                                                    "seat_no": "1A",
+                                                    "fare_conditions": "Business"
+                                                },
+                                                {
+                                                    "seat_id": 780,
+                                                    "seat_no": "1C",
+                                                    "fare_conditions": "Business"
+                                                },
+                                                {
+                                                    "seat_id": 781,
+                                                    "seat_no": "1D",
+                                                    "fare_conditions": "Business"
+                                                }
+                                            ]
                                         },
                                         {
                                             "code": "763",
                                             "model": "Boeing 767-300",
-                                            "range": 7900
+                                            "range": 7900,
+                                            "seats": [
+                                                {
+                                                    "seat_id": 557,
+                                                    "seat_no": "1A",
+                                                    "fare_conditions": "Business"
+                                                },
+                                                {
+                                                    "seat_id": 558,
+                                                    "seat_no": "1B",
+                                                    "fare_conditions": "Business"
+                                                },
+                                                {
+                                                    "seat_id": 559,
+                                                    "seat_no": "1C",
+                                                    "fare_conditions": "Business"
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -113,7 +147,7 @@
                         "description": "Код самолета",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         },
                         "example": "773"
                     }
@@ -150,7 +184,7 @@
                         "description": "Код самолета",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         },
                         "example": "785"
                     }
@@ -202,6 +236,234 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/aircrafts/{aircraft}/amount/total": {
+            "get": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Получение суммарной прибыли самолета",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код самолета",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "773"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "result": {
+                                                    "description": "Суммарная прибыль",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": "11932336800.00"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/aircrafts/{aircraft}/amount/month": {
+            "get": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Получение прибыли самолета по месяцам",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код самолета",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "773"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "month": {
+                                                        "description": "год-месяц",
+                                                        "type": "string"
+                                                    },
+                                                    "total": {
+                                                        "description": "Прибыль за месяц",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "result": [
+                                        {
+                                            "month": "2016-09",
+                                            "total": "3285567400.00"
+                                        },
+                                        {
+                                            "month": "2016-10",
+                                            "total": "7651578300.00"
+                                        },
+                                        {
+                                            "month": "2016-11",
+                                            "total": "995191100.00"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/aircrafts/{aircraft}/time/total": {
+            "get": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Получение суммарного времени нахождения самолета в воздухе",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код самолета",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "773"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "result": {
+                                                    "description": "Суммарное время, секунды",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": "2605440"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/aircrafts/{aircraft}/time/month": {
+            "get": {
+                "tags": [
+                    "Aircrafts"
+                ],
+                "summary": "Получение времени нахождения самолета в воздухе по месяцам",
+                "parameters": [
+                    {
+                        "name": "aircraft",
+                        "in": "path",
+                        "description": "Код самолета",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "773"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "month": {
+                                                        "description": "год-месяц",
+                                                        "type": "string"
+                                                    },
+                                                    "total": {
+                                                        "description": "Время в воздухе, секунды",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "result": [
+                                        {
+                                            "month": "2016-09",
+                                            "total": "1522560"
+                                        },
+                                        {
+                                            "month": "2016-10",
+                                            "total": "1082880"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
                     }
                 }
             }
@@ -782,6 +1044,14 @@
                         "description": "Максимальная дальность полета, км",
                         "type": "integer",
                         "example": 3000
+                    },
+                    "seats": {
+                        "title": "seats",
+                        "description": "Места",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Seats"
+                        }
                     }
                 },
                 "type": "object",
@@ -1000,6 +1270,39 @@
                 "type": "object",
                 "xml": {
                     "name": "FlightTicketsContactData"
+                }
+            },
+            "Seats": {
+                "title": "Seats",
+                "description": "Сведения о пассажирском месте",
+                "properties": {
+                    "seat_id": {
+                        "title": "seat_id",
+                        "description": "Id места",
+                        "type": "integer",
+                        "example": "779"
+                    },
+                    "seat_no": {
+                        "title": "seat_no",
+                        "description": "Номер места",
+                        "type": "string",
+                        "example": "1A"
+                    },
+                    "fare_conditions": {
+                        "title": "fare_conditions",
+                        "description": "Тариф",
+                        "type": "string",
+                        "enum": [
+                            "Business",
+                            "Comfort",
+                            "Economy"
+                        ],
+                        "example": "Business"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Seats"
                 }
             },
             "StoreAircraftRequest": {

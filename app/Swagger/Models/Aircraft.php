@@ -45,4 +45,14 @@ class Aircraft
      * @var integer
      */
     public int $range;
+
+    /**
+     * @OA\Property(
+     *      title="seats",
+     *      description="Места"
+     *  )
+     *
+     * @var Seats[]
+     */
+    public array $seats;
 }

@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   air_freight_server:
     container_name: air_freight_server
     image: nginx:1.23
@@ -20,6 +19,9 @@ services:
     volumes:
       - ./:/var/www/
       - ./_docker/app/php.ini:/usr/local/etc/php/php.ini
+      - ./_docker/app/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    extra_hosts:
+      - host.docker.internal:host-gateway
     depends_on:
       - air_freight_server
       - air_freight_database
@@ -37,8 +39,6 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-#    command:
-#      - 'psql \i '
     restart: always
 
   air_freight_adminer:

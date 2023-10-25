@@ -7,10 +7,12 @@ RUN apt-get update && apt-get install -y \
       libzip-dev \
       zip unzip \
       git && \
+      pecl install xdebug && \
       docker-php-ext-install pgsql pdo_pgsql && \
       docker-php-ext-install bcmath && \
       docker-php-ext-install gd && \
       docker-php-ext-install zip && \
+      docker-php-ext-enable xdebug && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

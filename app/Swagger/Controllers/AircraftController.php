@@ -70,6 +70,7 @@ namespace App\Swagger\Controllers;
  *      path="/api/aircrafts",
  *      summary="Добавление самолета",
  *      tags={"Aircrafts"},
+ *      security={{ "bearerAuth": {} }},
  *
  *      @OA\RequestBody(
  *          @OA\JsonContent(ref="#/components/schemas/StoreAircraftRequest")
@@ -77,8 +78,14 @@ namespace App\Swagger\Controllers;
  *
  *      @OA\Response(
  *          response=201,
- *          description="Успешное добавление"
+ *          description="Успешное добавление",
+ *          @OA\MediaType(mediaType="application/json"),
  *      ),
+ *      @OA\Response(
+ *           response=401,
+ *           description="Неавторизованный запрос",
+ *           @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated.")),
+ *       ),
  *      @OA\Response(
  *          response=422,
  *          description="Ошибка валидации входящих данных",
@@ -126,6 +133,7 @@ namespace App\Swagger\Controllers;
  *      path="/api/aircrafts/{aircraft}",
  *      summary="Обновление данных самолета",
  *      tags={"Aircrafts"},
+ *      security={{ "bearerAuth": {} }},
  *
  *      @OA\Parameter(
  *          name="aircraft",
@@ -144,11 +152,18 @@ namespace App\Swagger\Controllers;
  *
  *      @OA\Response(
  *          response=200,
- *          description="Успешное обновление данных"
+ *          description="Успешное обновление данных",
+ *          @OA\MediaType(mediaType="application/json"),
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Неавторизованный запрос",
+ *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated.")),
  *      ),
  *      @OA\Response(
  *          response=404,
  *          description="Not found",
+ *          @OA\MediaType(mediaType="application/json"),
  *      ),
  *      @OA\Response(
  *          response=422,

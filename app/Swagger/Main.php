@@ -9,6 +9,14 @@ namespace App\Swagger;
  * ),
  * @OA\PathItem(
  *     path="/api/"
+ * ),
+ * @OA\SecurityScheme (
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="bearer",
+ *     in="header",
+ *     name="Authorization"
  * )
  */
 class Main

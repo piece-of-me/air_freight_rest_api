@@ -93,7 +93,26 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Успешное добавление"
+                        "description": "Успешное добавление",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Ошибка валидации входящих данных",
@@ -131,7 +150,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/aircrafts/{aircraft}": {
@@ -200,10 +224,32 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Успешное обновление данных"
+                        "description": "Успешное обновление данных",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Not found"
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {}
+                        }
                     },
                     "422": {
                         "description": "Ошибка валидации входящих данных",
@@ -237,7 +283,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/aircrafts/{aircraft}/amount/total": {
@@ -512,7 +563,26 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Успешное добавление"
+                        "description": "Успешное добавление",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Ошибка валидации входящих данных",
@@ -562,7 +632,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/airports/{airport}": {
@@ -640,10 +715,32 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Успешное обновление данных"
+                        "description": "Успешное обновление данных",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Not found"
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {}
+                        }
                     },
                     "422": {
                         "description": "Ошибка валидации входящих данных",
@@ -689,7 +786,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/flights": {
@@ -778,6 +880,22 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Неавторизованный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
                         "description": "Ошибка валидации входящих данных",
                         "content": {
@@ -814,7 +932,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "patch": {
                 "tags": [
@@ -832,10 +955,32 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Успешное обновление данных"
+                        "description": "Успешное обновление данных",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизованный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Not found"
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {}
+                        }
                     },
                     "422": {
                         "description": "Ошибка валидации входящих данных",
@@ -877,7 +1022,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/flights/{flight}": {
@@ -1016,6 +1166,74 @@
                     },
                     "404": {
                         "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/tokens/create": {
+            "post": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "Получение токена",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateTokenRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешная аутентификация",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "description": "Bearer Token",
+                                            "type": "string",
+                                            "example": "3|a3hSrH6HOitvbmNqRrv18DXuu99sUIl7ACoQ4BVi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Нуеспешная аутентификация",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации входящих данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"email\" должно существовать"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "example": {
+                                                    "email": [
+                                                        "Поле \"email\" должно существовать"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1605,6 +1823,29 @@
                 },
                 "type": "object"
             },
+            "CreateTokenRequest": {
+                "title": "CreateTokenRequest",
+                "description": "Данные, необходимые для аутентификации",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "description": "E-mail пользователя",
+                        "type": "string",
+                        "example": "mail@mail.com"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "Пароль пользователя",
+                        "type": "string",
+                        "example": "12345678910"
+                    }
+                },
+                "type": "object"
+            },
             "AircraftResource": {
                 "title": "AircraftResource",
                 "description": "Поля самолета",
@@ -1689,6 +1930,15 @@
                 "xml": {
                     "name": "FlightTicketsResource"
                 }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "bearer",
+                "scheme": "bearer"
             }
         }
     }

@@ -21,7 +21,8 @@ namespace App\Swagger\Controllers;
  * @OA\Post(
  *      path="/api/airports",
  *      summary="Добавление аэропорта",
- *       tags={"Airports"},
+ *      tags={"Airports"},
+ *      security={{ "bearerAuth": {} }},
  *
  *      @OA\RequestBody(
  *          @OA\JsonContent(ref="#/components/schemas/StoreAirportRequest")
@@ -29,7 +30,13 @@ namespace App\Swagger\Controllers;
  *
  *      @OA\Response(
  *          response=201,
- *          description="Успешное добавление"
+ *          description="Успешное добавление",
+ *          @OA\MediaType(mediaType="application/json"),
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Неавторизованный запрос",
+ *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated.")),
  *      ),
  *      @OA\Response(
  *          response=422,
@@ -90,6 +97,7 @@ namespace App\Swagger\Controllers;
  *      path="/api/airports/{airport}",
  *      summary="Обновление данных аэропорта",
  *      tags={"Airports"},
+ *      security={{ "bearerAuth": {} }},
  *
  *      @OA\Parameter(
  *          name="aircraft",
@@ -108,11 +116,18 @@ namespace App\Swagger\Controllers;
  *
  *      @OA\Response(
  *          response=200,
- *          description="Успешное обновление данных"
+ *          description="Успешное обновление данных",
+ *          @OA\MediaType(mediaType="application/json"),
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Неавторизованный запрос",
+ *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated.")),
  *      ),
  *      @OA\Response(
  *          response=404,
  *          description="Not found",
+ *          @OA\MediaType(mediaType="application/json"),
  *      ),
  *      @OA\Response(
  *          response=422,

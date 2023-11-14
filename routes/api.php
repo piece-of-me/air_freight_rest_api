@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 |
 */
 
+Route::post('/tokens/create', App\Http\Controllers\TokenController::class);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -35,10 +37,13 @@ Route::prefix('aircrafts')->group(function () {
         ->whereIn('type', ['total', 'month'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
         ->name('aircrafts.time');
-    Route::post('/', [AircraftController::class, 'store'])->name('aircrafts.store');
+    Route::post('/', [AircraftController::class, 'store'])
+        ->name('aircrafts.store')
+        ->middleware('auth:sanctum');
     Route::patch('/{aircraft:aircraft_code}', [AircraftController::class, 'update'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
-        ->name('aircrafts.update');
+        ->name('aircrafts.update')
+        ->middleware('auth:sanctum');
 });
 
 Route::prefix('airports')->group(function () {
@@ -46,9 +51,12 @@ Route::prefix('airports')->group(function () {
     Route::get('/{airport:airport_code}', [AirportController::class, 'show'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
         ->name('airports.show');
-    Route::post('/', [AirportController::class, 'store'])->name('airports.store');
+    Route::post('/', [AirportController::class, 'store'])
+        ->middleware('auth:sanctum')
+        ->name('airports.store');
     Route::patch('/{airport:airport_code}', [AirportController::class, 'update'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->middleware('auth:sanctum')
         ->name('airports.update');
 });
 
@@ -60,9 +68,12 @@ Route::prefix('flights')->group(function () {
     Route::get('/{flight:flight_id}/tickets', [FlightController::class, 'ticket'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
         ->name('flights.ticket');
-    Route::post('/', [FlightController::class, 'store'])->name('flights.store');
+    Route::post('/', [FlightController::class, 'store'])
+        ->middleware('auth:sanctum')
+        ->name('flights.store');
     Route::patch('/{flight:flight_id}', [FlightController::class, 'update'])
         ->missing(fn() => response()->json(status: Response::HTTP_NOT_FOUND))
+        ->middleware('auth:sanctum')
         ->name('flights.update');
 });
 

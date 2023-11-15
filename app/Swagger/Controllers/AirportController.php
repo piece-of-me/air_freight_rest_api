@@ -8,8 +8,37 @@ namespace App\Swagger\Controllers;
  *      summary="Получение всех аэропортов",
  *      tags={"Airports"},
  *
- *      @OA\RequestBody(
- *          @OA\JsonContent(ref="#/components/schemas/IndexAirportRequest")
+ *      @OA\Parameter(
+ *          name="airport_code",
+ *          description="Код аэропорта",
+ *          in="query",
+ *          example="MJZ",
+ *          @OA\Schema(type="string"),
+ *          required=false,
+ *      ),
+ *      @OA\Parameter(
+ *          name="airport_name",
+ *          description="Название аэропорта",
+ *          in="query",
+ *          example="Мирный",
+ *          @OA\Schema(type="string"),
+ *          required=false,
+ *      ),
+ *      @OA\Parameter(
+ *          name="city",
+ *          description="Город, в котором расположен аэропорт",
+ *          in="query",
+ *          example="Мирный",
+ *          @OA\Schema(type="string"),
+ *          required=false,
+ *      ),
+ *      @OA\Parameter(
+ *          name="timezone",
+ *          description="Временная зона аэропорта",
+ *          in="query",
+ *          example="Asia/Yakutsk",
+ *          @OA\Schema(type="string"),
+ *          required=false,
  *      ),
  *
  *      @OA\Response(

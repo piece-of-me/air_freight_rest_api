@@ -525,15 +525,48 @@
                     "Airports"
                 ],
                 "summary": "Получение всех аэропортов",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IndexAirportRequest"
-                            }
-                        }
+                "parameters": [
+                    {
+                        "name": "airport_code",
+                        "in": "query",
+                        "description": "Код аэропорта",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "MJZ"
+                    },
+                    {
+                        "name": "airport_name",
+                        "in": "query",
+                        "description": "Название аэропорта",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Мирный"
+                    },
+                    {
+                        "name": "city",
+                        "in": "query",
+                        "description": "Город, в котором расположен аэропорт",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Мирный"
+                    },
+                    {
+                        "name": "timezone",
+                        "in": "query",
+                        "description": "Временная зона аэропорта",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Asia/Yakutsk"
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -800,15 +833,106 @@
                     "Flights"
                 ],
                 "summary": "Получение всех рейсов",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IndexFlightRequest"
-                            }
-                        }
+                "parameters": [
+                    {
+                        "name": "flight_no",
+                        "in": "query",
+                        "description": "Номер рейса",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "PG0405"
+                    },
+                    {
+                        "name": "scheduled_departure",
+                        "in": "query",
+                        "description": "Дата отправления",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        },
+                        "example": "2016-09-13 05:35:00"
+                    },
+                    {
+                        "name": "scheduled_arrival",
+                        "in": "query",
+                        "description": "Дата прибытия",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        },
+                        "example": "2016-09-14 06:30:00"
+                    },
+                    {
+                        "name": "departure_airport",
+                        "in": "query",
+                        "description": "Код аэропорта отправления",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "DME"
+                    },
+                    {
+                        "name": "arrival_airport",
+                        "in": "query",
+                        "description": "Код аэропорта прибытия",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "HMA"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Статус рейса",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Arrived",
+                                "Scheduled",
+                                "On Time",
+                                "Departed",
+                                "Delayed",
+                                "Cancelled"
+                            ]
+                        },
+                        "example": "On Time"
+                    },
+                    {
+                        "name": "aircraft_code",
+                        "in": "query",
+                        "description": "Код самолета, IATA",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 321
+                    },
+                    {
+                        "name": "actual_departure",
+                        "in": "query",
+                        "description": "Фактическое время отправления",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        },
+                        "example": "2016-09-13 05:36:00"
+                    },
+                    {
+                        "name": "actual_arrival",
+                        "in": "query",
+                        "description": "Фактическое время прибытия",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        },
+                        "example": "2016-09-14 06:38:00"
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -1572,33 +1696,6 @@
                 },
                 "type": "object"
             },
-            "IndexAirportRequest": {
-                "title": "IndexAirportRequest",
-                "description": "Данные для фильтрации списка аэропортов",
-                "properties": {
-                    "airport_code": {
-                        "description": "Код аэропорта",
-                        "type": "string",
-                        "example": "MJZ"
-                    },
-                    "airport_name": {
-                        "description": "Название аэропорта",
-                        "type": "string",
-                        "example": "Мирный"
-                    },
-                    "city": {
-                        "description": "Город",
-                        "type": "string",
-                        "example": "Мирный"
-                    },
-                    "timezone": {
-                        "description": "Временная зона аэропорта",
-                        "type": "string",
-                        "example": "Asia/Yakutsk"
-                    }
-                },
-                "type": "object"
-            },
             "StoreAirportRequest": {
                 "title": "StoreAirportRequest",
                 "description": "Данные, необходимые для добавления аэропорта",
@@ -1687,62 +1784,6 @@
                         "description": "Временная зона аэропорта",
                         "type": "string",
                         "example": "Asia/Yakutsk"
-                    }
-                },
-                "type": "object"
-            },
-            "IndexFlightRequest": {
-                "title": "IndexFlightRequest",
-                "description": "Данные для фильтрации",
-                "properties": {
-                    "flight_no": {
-                        "description": "Номер рейса",
-                        "type": "string",
-                        "example": "PG0405"
-                    },
-                    "scheduled_departure": {
-                        "description": "Дата отправления",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2016-09-13 05:35:00"
-                    },
-                    "scheduled_arrival": {
-                        "description": "Дата прибытия",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2016-09-14 06:30:00"
-                    },
-                    "departure_airport": {
-                        "description": "Код аэропорта отправления",
-                        "type": "string",
-                        "example": "DME"
-                    },
-                    "arrival_airport": {
-                        "description": "Код аэропорта прибытия",
-                        "type": "string",
-                        "example": "HMA"
-                    },
-                    "status": {
-                        "description": "Статус рейса",
-                        "type": "string",
-                        "example": "On Time"
-                    },
-                    "aircraft_code": {
-                        "description": "Код самолета, IATA",
-                        "type": "integer",
-                        "example": 321
-                    },
-                    "actual_departure": {
-                        "description": "Фактическое время отправления",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2016-09-13 05:36:00"
-                    },
-                    "actual_arrival": {
-                        "description": "Фактическое время прибытия",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2016-09-14 06:38:00"
                     }
                 },
                 "type": "object"

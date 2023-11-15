@@ -77,6 +77,4 @@ Route::prefix('flights')->group(function () {
         ->name('flights.update');
 });
 
-Route::fallback(function () {
-    dd(['Маршрут не найден', request()]);
-});
+Route::fallback(fn() => response()->json(['message' => 'NOT FOUND'], Response::HTTP_NOT_FOUND));

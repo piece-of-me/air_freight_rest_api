@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             TicketSeeder::class,
             TicketFlightSeeder::class,
             BoardingPassSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

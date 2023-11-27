@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Traits\Filterable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -12,6 +13,7 @@ class Flight extends Model
 {
     use SoftDeletes;
     use Filterable;
+    use HasFactory;
 
     protected $table = 'flights';
     protected $primaryKey = 'flight_id';
@@ -24,6 +26,8 @@ class Flight extends Model
     public const STATUS_DEPARTED = 'Departed';
     public const STATUS_DELAYED = 'Delayed';
     public const STATUS_CANCELLED = 'Cancelled';
+
+    public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
     public function departureAirport(): belongsTo
     {

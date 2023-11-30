@@ -28,7 +28,9 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
-        DB::statement('ALTER TABLE ticket_flights ADD CONSTRAINT ticket_flights_amount_check CHECK ( amount > 0);');
+        if (env('APP_ENV') !== 'testing') {
+            DB::statement('ALTER TABLE ticket_flights ADD CONSTRAINT ticket_flights_amount_check CHECK ( amount > 0);');
+        }
     }
 
     /**
@@ -36,7 +38,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        DB::statement('ALTER TABLE ticket_flights DROP CONSTRAINT ticket_flights_amount_check;');
+        if (env('APP_ENV') !== 'testing') {
+            DB::statement('ALTER TABLE ticket_flights DROP CONSTRAINT ticket_flights_amount_check;');
+        }
         Schema::dropIfExists('ticket_flights');
     }
 };

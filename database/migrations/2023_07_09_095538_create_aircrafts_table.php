@@ -21,7 +21,9 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
-        DB::statement('ALTER TABLE aircrafts ADD CONSTRAINT aircrafts_range_check CHECK (range > 0);');
+        if (env('APP_ENV') !== 'testing') {
+            DB::statement('ALTER TABLE aircrafts ADD CONSTRAINT aircrafts_range_check CHECK (range > 0);');
+        }
     }
 
     /**
@@ -29,7 +31,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        DB::statement('ALTER TABLE aircrafts DROP CONSTRAINT aircrafts_range_check;');
+        if (env('APP_ENV') !== 'testing') {
+            DB::statement('ALTER TABLE aircrafts DROP CONSTRAINT aircrafts_range_check;');
+        }
         Schema::dropIfExists('aircrafts');
     }
 };

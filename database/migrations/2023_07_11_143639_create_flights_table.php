@@ -35,8 +35,10 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
-        DB::statement('ALTER TABLE flights ADD CONSTRAINT flights_check CHECK ( scheduled_arrival > scheduled_departure );');
-        DB::statement('ALTER TABLE flights ADD CONSTRAINT flights_check1 CHECK (((actual_arrival IS NULL) OR ((actual_departure IS NOT NULL) AND (actual_arrival IS NOT NULL) AND (actual_arrival > actual_departure))));');
+        if (env('APP_ENV') !== 'testing') {
+            DB::statement('ALTER TABLE flights ADD CONSTRAINT flights_check CHECK ( scheduled_arrival > scheduled_departure );');
+            DB::statement('ALTER TABLE flights ADD CONSTRAINT flights_check1 CHECK (((actual_arrival IS NULL) OR ((actual_departure IS NOT NULL) AND (actual_arrival IS NOT NULL) AND (actual_arrival > actual_departure))));');
+        }
     }
 
     /**
@@ -44,8 +46,10 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        DB::statement('ALTER TABLE flights DROP CONSTRAINT flights_check1;');
-        DB::statement('ALTER TABLE flights DROP CONSTRAINT flights_check;');
+        if (env('APP_ENV') !== 'testing') {
+            DB::statement('ALTER TABLE flights DROP CONSTRAINT flights_check1;');
+            DB::statement('ALTER TABLE flights DROP CONSTRAINT flights_check;');
+        }
         Schema::dropIfExists('flights');
     }
 };

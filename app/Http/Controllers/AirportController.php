@@ -43,7 +43,13 @@ class AirportController extends Controller
     public function update(Airport $airport, UpdateRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $airport->update($data);
+        $airport->update([
+            'airport_name' => $data['name'],
+            'city' => $data['city'],
+            'longitude' => $data['longitude'],
+            'latitude' => $data['latitude'],
+            'timezone' => $data['timezone'],
+        ]);
         return response()->json(status: Response::HTTP_OK);
     }
 }

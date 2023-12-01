@@ -4,27 +4,10 @@ namespace Api;
 
 use App\Faker\AirportProvider;
 use App\Models\Airport;
-use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AirportTest extends TestCase
 {
-    use WithFaker;
-    use DatabaseMigrations;
-
-    protected ?string $token = null;
-
-    protected function getBearerToken(): string
-    {
-        if (!$this->token) {
-            $user = User::factory()->create();
-            $this->token = 'Bearer ' . $user->createToken('token')->plainTextToken;
-        }
-        return $this->token;
-    }
-
     public function test_that_airports_index_send_correct_response(): void
     {
         $airport = Airport::factory(5)->create()->first();

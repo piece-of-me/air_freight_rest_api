@@ -24,17 +24,18 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'model' => 'string|max:50',
-            'range' => 'int|min:1'
+            'model' => 'required_without:range|string|max:50',
+            'range' => 'required_without:model|integer|min:1'
         ];
     }
 
     public function messages(): array
     {
         return [
+            'required_without' => 'Необходимо передать хотя бы одно из указанных полей: model, range',
             'string' => 'Поле ":attribute" должно быть строкой',
-            'int' => 'Поле ":attribute" должно быть числом',
-            'max' => 'Поле ":attribute" не должно быть длиннее 50 символов',
+            'integer' => 'Поле ":attribute" должно быть числом',
+            'max' => 'Поле ":attribute" не должно быть длиннее :max символов',
             'min' => 'Поле ":attribute" должно быть больше 0',
         ];
     }

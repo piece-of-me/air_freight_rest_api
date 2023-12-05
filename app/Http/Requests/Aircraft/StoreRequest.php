@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
         return [
             'code' => 'required|string|max:3|unique:aircrafts,aircraft_code',
             'model' => 'required|string|max:50',
-            'range' => 'required|int|min:1'
+            'range' => 'required|integer|min:1'
         ];
     }
 
@@ -36,8 +36,8 @@ class StoreRequest extends FormRequest
         return [
             'required' => 'Поле ":attribute" должно присутствовать',
             'string' => 'Поле ":attribute" должно быть строкой',
-            'int' => 'Поле ":attribute" должно быть числом',
-            'max' => 'Поле ":attribute" не должно быть длиннее 3 символов',
+            'integer' => 'Поле ":attribute" должно быть числом',
+            'max' => 'Поле ":attribute" не должно быть длиннее :max символов',
             'min' => 'Поле ":attribute" должно быть больше 0',
             'code.unique' => 'Судно с кодом :input уже существует',
         ];

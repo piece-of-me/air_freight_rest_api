@@ -212,10 +212,21 @@ namespace App\Swagger\Controllers;
  *      )
  * ),
  * @OA\Patch (
- *      path="/api/flights",
+ *      path="/api/flights/{flight}",
  *      summary="Обновление информации о рейсе",
  *      tags={"Flights"},
  *      security={{ "bearerAuth": {} }},
+ *
+ *      @OA\Parameter(
+ *          name="flight",
+ *          description="Id рейса",
+ *          required=true,
+ *          in="path",
+ *          example="1",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
  *
  *      @OA\RequestBody(
  *          @OA\JsonContent(ref="#/components/schemas/UpdateFlightRequest")

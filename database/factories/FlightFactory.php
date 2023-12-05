@@ -42,20 +42,27 @@ class FlightFactory extends Factory
 
     public function configure(): static
     {
-        return $this->afterCreating(function (Flight $flight) {
-            Booking::factory($this->faker->numberBetween(2, 10))->create()
-                ->map(fn($item) => [
+        $this->afterCreating(function (Flight $flight) {
+            $bookings = Booking::factory($this->faker->numberBetween(2, 10))->create();
+
+            $tickets = [];
+            $bookings->each(static function (Booking $item) use (&$tickets) {
+                $ticket = Ticket::factory()->create(['book_ref' => $item->book_ref]);
+                $tickets[] = [
                     'total_amount' => $item->total_amount,
-                    'ticket_no' => Ticket::factory()->create(['book_ref' => $item->book_ref])->ticket_no
-                ])
-                ->each(static function (array $item) use ($flight) {
-                    TicketFlight::factory()->create([
-                        'flight_id' => $flight->flight_id,
-                        'ticket_no' => $item['ticket_no'],
-                        'amount' => $item['total_amount']
-                    ]);
-                });
+                    'ticket_no' => $ticket->ticket_no
+                ];
+            });
+
+            collect($tickets)->each(static function (array $item) use ($flight) {
+                TicketFlight::factory()->create([
+                    'flight_id' => $flight->flight_id,
+                    'ticket_no' => $item['ticket_no'],
+                    'amount' => $item['total_amount']
+                ]);
+            });
 
         });
+        return $this;
     }
 }

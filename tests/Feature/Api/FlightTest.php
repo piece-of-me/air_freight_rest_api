@@ -7,9 +7,8 @@ use App\Faker\FlightProvider;
 use App\Models\Aircraft;
 use App\Models\Airport;
 use App\Models\Flight;
-use Tests\TestCase;
 
-class FlightTest extends TestCase
+class FlightTest extends ApiTestCase
 {
     public function test_that_flights_index_send_correct_response(): void
     {

@@ -4,9 +4,8 @@ namespace Tests\Feature\Api;
 
 use App\Faker\AirportProvider;
 use App\Models\Airport;
-use Tests\TestCase;
 
-class AirportTest extends TestCase
+class AirportTest extends ApiTestCase
 {
     public function test_that_airports_index_send_correct_response(): void
     {

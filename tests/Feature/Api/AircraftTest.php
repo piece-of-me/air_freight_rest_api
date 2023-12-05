@@ -4,9 +4,8 @@ namespace Tests\Feature\Api;
 
 use App\Faker\AircraftProvider;
 use App\Models\Aircraft;
-use Tests\TestCase;
 
-class AircraftTest extends TestCase
+class AircraftTest extends ApiTestCase
 {
     public function test_that_aircrafts_index_send_correct_response(): void
     {
@@ -176,10 +175,5 @@ class AircraftTest extends TestCase
                 'model' => $aircraft->model,
                 'range' => $aircraft->range,
             ]);
-    }
-
-    public function test_that_receiving_total_profit_of_aircraft_is_correct(): void
-    {
-        $aircraft = Aircraft::factory()->create();
     }
 }

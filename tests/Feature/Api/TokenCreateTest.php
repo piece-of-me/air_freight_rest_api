@@ -3,9 +3,8 @@
 namespace Tests\Feature\Api;
 
 use App\Models\User;
-use Tests\TestCase;
 
-class TokenCreateTest extends TestCase
+class TokenCreateTest extends ApiTestCase
 {
     public function test_that_token_creation_works_correct(): void
     {
